@@ -3,9 +3,8 @@ var router = express.Router();
 var fs = require('fs');
 var http = require('http');
 var url = require('url');
-var router = express.Router();
 var mysql = require('mysql');
-var myConnection = mysql.createConnection(require('../dbConfig'));
+var myConnection = mysql.createConnection(require('../dbItem'));
 // var callFunc = require('../model/funcdir.js');
 
 
@@ -37,8 +36,23 @@ router.get('/select_item', function (req, res) {
 
 router.post('/select_process', function(req, res) {
     console.log('Select_process 접속')
-    console.log(req)
-    res.send('Hi')
+    console.log(req.body.item)
+    // itemInfo = {
+    //     item_a: req.body.item_a,
+    //     item_b: req.body.item_b,
+    //     item_c: req.body.item_c,
+    //     min: req.body.min,
+    //     max: req.body.max
+    // }
+    var sql = `select * from bankdb where value between ${req.body.min} AND ${req.body.max}`;
+    console.log(sql);
+    myConnection.query(sql, function (err, results) {
+        if(err) {
+            console.log('bankdb Err' + err);
+        }
+        console.log(results[0].item)
+        res.render('item_list.html', {data:results})
+    });
 });
 
 module.exports = router;
