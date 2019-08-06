@@ -1,6 +1,10 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+// var session = require('express-session');
+
+// app.use(session({secret: 'ssshhhhh'}));
+
 // view 경로 설정
 app.set('views', __dirname + '/views');
 
@@ -13,11 +17,13 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//main 연결
 var mainRouter = require('./router/main');
 app.use(mainRouter);
 
-var funcdir = require('./router/funcdir');
-app.use(funcdir);
+//select_item 연결
+var selectItem = require('./router/select_item');
+app.use(selectItem);
 
 app.listen(3000, function() {
     console.log('서버 가동');

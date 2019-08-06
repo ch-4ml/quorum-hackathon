@@ -17,14 +17,11 @@
             <input type="password" name="userPW" placeholder="login PW">
         </p>
         <p>
+            <input type="hidden" name="distinct_num" value="<%= data.dnum %>">
+        </p>
+        <p>
             <button type="submit">submit</button>
         </p>
     </form>
-    
-    
-    <form method="post" action="/access">
-    <button type="submit" id="userCom" name="userCom" >Company</button>
-    <button type="submit" id="userNor" name="userNor" >Normal</button>
-    </form>
-</body>
-</html>
+    </body>
+    </html>

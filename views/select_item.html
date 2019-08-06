@@ -1,17 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
-    <form type="POST" action="/select_process">
-        <label><input type="checkbox" value="">a</label>
-        <label><input type="checkbox" value="">b</label>
-        <label><input type="checkbox" value="">c</label>    
-        <input type="submit" value="제출">
+    <form type="post" action="/select_process">
+        <p>
+            금융 상품 A :<label><input type="checkbox" name="item_a" value="a">a</label>
+        </p>
+        <p>
+            금융 상품 B :<label><input type="checkbox" name="item_b" value="b">b</label>
+        </p>
+        <p>
+            금융 상품 C :<label><input type="checkbox" name="item_c" value=c>c</label>
+        </p>
+        <p>
+            상품 금액 : <input type="text" name="min" id="min" placeholder="Min"> ~ <input type="text" name="max" id="max" placeholder="Max">
+        </p>
+        <p>
+            <input type="submit" value="제출">
+        </p>
     </form>
 </body>
+
 </html>
