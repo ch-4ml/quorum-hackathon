@@ -34,9 +34,18 @@ function access_Selection() {
     return template;
 }
 
-function login_company_templateHTML() {
+function login_templateHTML(distinct_num) {
     var template = `
-    <form method="post" action="/login_process_company">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form method="post" action="/login_process">
         <p>
             ID
             <input type="text" name="userID" placeholder="login ID">
@@ -46,26 +55,14 @@ function login_company_templateHTML() {
             <input type="password" name="userPW" placeholder="login PW">
         </p>
         <p>
-            <button type="submit">submit</button>
-        </p>
-    </form>`
-    return template;
-}
-function login_normal_templateHTML() {
-    var template = `
-    <form method="post" action="/login_process_normal">
-        <p>
-            ID
-            <input type="text" name="userID" placeholder="login ID">
-        </p>
-        <p>
-            PW
-            <input type="password" name="userPW" placeholder="login PW">
+            <input type="hidden" name="distinct_num" value="${distinct_num}">
         </p>
         <p>
             <button type="submit">submit</button>
         </p>
-    </form>`
+    </form>
+    </body>
+    </html>`
     return template;
 }
 
@@ -122,64 +119,76 @@ router.get('/login', function (req, res) {
 
 router.post('/access_Selection', function (req, res) {
     if (req.body.name === '법인고객') {
-        var template = login_company_templateHTML()
-        res.send(template);
+        var distinct_num = 1;
+        var template = login_templateHTML(distinct_num);
     } else if (req.body.name === '일반고객') {
-        var template = login_normal_templateHTML()
-        res.send(template);
+        var distinct_num = 0;
+        var template = login_templateHTML(distinct_num);
     } else {
         console.log('에러');
     }
+    console.log(template);
+    res.end(template);
 });
-router.post('/login_process_company', function (req, res) {
+router.post('/login_process', function (req, res) {
+    console.log(req.body);
     var insertedID = req.body.userID;
     var insertedPW = req.body.userPW;
+    var distinct_num = req.body.distinct_num;
+    var sql = `select userID, userPW from testdb where status = ${distinct_num}`;
+    if (distinct_num == 1) {
+        myConnection.query(sql, function (err, results) {
+            console.log(results[0]);
+            if (err) {
+                console.log('MySQL Err 1: ' + err);
+            }
+            if (results[0].userID == insertedID) {
+                console.log('ID확인');
+                if (results[0].userPW == insertedPW) {
+                    console.log('환영합니다. 기업고객님');
+                    res.redirect('/')
+                } else {
+                    console.log('비밀번호를 확인해주세요.')
+                    res.redirect('/')
+                }
+            } else {
+                console.log('ID를 확인해주세요.');
+            }
+        })
+    } else if (distinct_num == 0) {
+        myConnection.query(sql, function (err, results) {
+            console.log(results);
+            if (err) {
+                console.log('MySQL Err 1: ' + err);
+            }
+            if (results[0].userID == insertedID) {
+                console.log('ID확인');
+                if (results[0].userPW == insertedPW) {
+                    console.log('환영합니다. 개인고객님');
+                    res.redirect('/')
+                } else {
+                    console.log('비밀번호를 확인해주세요.')
+                    res.redirect('/')
+                }
+            } else {
+                console.log('ID를 확인해주세요.');
+            }
+        })
+    } else {
+        console.log('이도저도 아닌 값');
+    }
+});
 
-    var sql = "select userID, userPW from testdb where status = 1";
-    myConnection.query(sql, function (err, results) {
-        if (err) {
-            console.log('MySQL Err 1: ' + err);
-        }
-        if (results[1].userID == insertedID) {
-            console.log('ID확인');
-            if (results[1].userPW == insertedPW) {
-                console.log('환영합니다. 기업고객님');
-                res.redirect('/')
-            } else {
-                console.log('비밀번호를 확인해주세요.')
-            }
-        }
-    })
-});
-router.post('/login_process_normal', function (req, res) {
-    var insertedID = req.body.userID;
-    var insertedPW = req.body.userPW;
-    var sql = "select userID, userPW from testdb where status = 0";
-    myConnection.query(sql, function (err, results) {
-        if (err) {
-            console.log('MySQL Err 1: ' + err);
-        }
-        if (results[1].userID == insertedID) {
-            console.log('ID확인');
-            if (results[1].userPW == insertedPW) {
-                console.log('환영합니다. 개인고객님');
-                res.redirect('/')
-            } else {
-                console.log('비밀번호를 확인해주세요.')
-            }
-        }
-    })
-});
 router.get('/register', function (req, res) {
     var template = register_Selection();
     res.end(template);
 });
 router.post('/register_Selection', function (req, res) {
-    if(req.body.name === '법인고객') {
+    if (req.body.name === '법인고객') {
         var distinct_num = 1;
         var template = register_templateHTML(distinct_num);
 
-    } else if(req.body.name === '일반고객') {
+    } else if (req.body.name === '일반고객') {
         var distinct_num = 0;
         var template = register_templateHTML(distinct_num);
 
