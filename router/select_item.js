@@ -39,14 +39,12 @@ router.get('/selected_item', function (req, res) {
             item_name: results,
             item_leng: results.length
         }
-        console.log(data_send.item_name)
         res.render('select_item.html', { item_send: data_send })
     });
 });
 
 router.post('/select_process', function (req, res) {
     console.log('Select_process 접속')
-    console.log(req.body.item)
     var list = "";
     function callSum(req) {
         var i = 0;
@@ -74,17 +72,52 @@ router.post('/select_process', function (req, res) {
 });
 
 router.post('/enroll_item', function (req, res) {
-    console.log(req.body)
-    console.log(req.body.selected_item_list);
-    var json = req.body.selected_item_list;
-    var obj = JSON.stringify(json);
-    console.log(obj);
-    enrolled_item = {
+    console.log('bankdb변경 & company db로 전달')
+    console.log(req.session.user.user);
+    var retrieved_data = JSON.parse(req.body.selected_item_list);
+    enrolled_all = {
+        enrolled_item: retrieved_data,
         enrolled_value: req.body.total_item_value,
-        enrolled_item: req.body.selected_item_list,
-        value_proposal: req.body.proposal
+        value_proposal: req.body.proposal,
+        investor: req.session.user.user
     }
-    res.render()
+    function callSum(enrolled_all) {
+        var list=""
+        var i = 0;
+        while (i < enrolled_all.enrolled_item.length) {
+            list = list + `item = ` + `"${enrolled_all.enrolled_item[i].item}"`;
+            if (i != enrolled_all.enrolled_item.length-1) {
+                list = list + ` OR `
+            }
+            i++;
+        }
+        return list;
+    }
+    var condition = callSum(enrolled_all);
+    var sql = `UPDATE bankdb SET status = 1, investor = "${enrolled_all.investor}", proposal = ${enrolled_all.value_proposal} where ${condition}`;
+    console.log(sql);
+    myConnection.query(sql, function (err, results) {
+        if (err) {
+            console.log('bankdb update ' + err);
+        }
+        console.log(results);
+    });
+
+    res.redirect('/')
+});
+
+router.get('/item_proposal', function(req, res) {
+    var sql = `SELECT item, val, category, proposal FROM bankdb WHERE status = 1 AND investor = "kshyeon123"`;
+    myConnection.query(sql, function(err, results) {
+         if(err) {
+            console.log('bankdb_investor load ' + err)
+        }
+        build_item = {
+            item_data:results,
+        }
+        console.log(build_item.item_data)
+        res.render('company_index.html', {data:build_item});
+    });
 });
 module.exports = router;
 

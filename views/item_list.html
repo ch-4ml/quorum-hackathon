@@ -16,12 +16,13 @@
         <p>
             채권 명 : <%= data.item_data[i].item %> 채권 분류 : <%= data.item_data[i].category %>
             <% var total_value = total_value + data.item_data[i].val; %>
+
             <% } %>
         </p>
-        
+
         채권 총액 : <%= total_value %>
+        <input type="hidden" name="selected_item_list" value="<%= JSON.stringify(data.item_data) %>">
         <input type="hidden" name="total_item_value" value="<%= total_value %>"> 
-        <input type="hidden" name="selected_item_list" value="<%=data.item_data%>">
         <p>
             가격 제안 : <input type="text" name="proposal" id="proposal">
         </p>

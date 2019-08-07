@@ -176,7 +176,7 @@ router.post('/register_process', function (req, res) {
         var userPW = req.body.userPW;
         var groups = req.body.distinct_group;
         var status = 0;
-        var sql = 'insert into testdb (userID, userPW,groups, status) values (?, ?, ?, ?)';
+        var sql = 'insert into testdb (userID, userPW, groups, status) values (?, ?, ?, ?)';
         myConnection.query(sql, [userID, userPW, groups, status], function (err, data) {
             if (err) {
                 console.log('Register Err :' + err);
