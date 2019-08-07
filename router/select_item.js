@@ -36,11 +36,11 @@ router.get('/selected_item', function (req, res) {
             console.log('bankdb ' + err);
         }
         data_send = {
-            item_name:results,
+            item_name: results,
             item_leng: results.length
         }
         console.log(data_send.item_name)
-        res.render('select_item.html', { item_send: data_send})
+        res.render('select_item.html', { item_send: data_send })
     });
 });
 
@@ -68,14 +68,23 @@ router.post('/select_process', function (req, res) {
         loan_data = {
             item_data: results,
         }
-        console.log(loan_data.item_data);
-        res.render('item_list.html', {data:loan_data})
+        res.render('item_list.html', { data: loan_data })
     });
 
 });
 
-router.get('/item_list', function(req, res) {
-
-})
+router.post('/enroll_item', function (req, res) {
+    console.log(req.body)
+    console.log(req.body.selected_item_list);
+    var json = req.body.selected_item_list;
+    var obj = JSON.stringify(json);
+    console.log(obj);
+    enrolled_item = {
+        enrolled_value: req.body.total_item_value,
+        enrolled_item: req.body.selected_item_list,
+        value_proposal: req.body.proposal
+    }
+    res.render()
+});
 module.exports = router;
 

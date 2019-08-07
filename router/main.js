@@ -27,6 +27,7 @@ myConnection.connect(function (err) {
 });
 
 router.get('/', function (req, res) {
+
     //로그인 상태 확인
     var loggined;
     if (req.session.user) {
@@ -39,6 +40,7 @@ router.get('/', function (req, res) {
             loggined: false,
         }
     }
+    console.log(data.userData)
     res.render('index.html', { data: data });
 });
 
@@ -74,26 +76,31 @@ router.post('/login_process', function (req, res) {
         insertedID: req.body.userID,
         insertedPW: req.body.userPW,
         distinct_num: req.body.distinct_num,
+        distinct_group: req.body.distinct_group,
     }
     /*session이 없을 경우 */
-    var sql = `select userID, userPW from testdb where status = ${user.distinct_num}`;
+    var sql = `select userID, userPW from testdb where groups = '${user.distinct_group}'`;
+    console.log(sql)
     myConnection.query(sql, function (err, results) {
-        if (user.distinct_num == 1) {
+        if (user.distinct_group === 'company') {
             if (results[0].userID == user.insertedID && results[0].userPW == user.insertedPW) {
                 console.log('법인고객 Login');
                 req.session.user = {
                     user: user.insertedID,
-                    
+                    dnum: user.distinct_num,
+                    dgrp: user.distinct_group,
                 }
                 res.redirect('/');
             } else {
                 console.log('login 실패');
             }
-        } else if (user.distinct_num == 0) {
+        } else if (user.distinct_group === 'client') {
             if (results[0].userID == user.insertedID && results[0].userPW == user.insertedPW) {
                 console.log('개인고객 Login');
                 req.session.user = {
                     user: user.insertedID,
+                    dnum: user.distinct_num,
+                    dgrp: user.distinct_group,
                 }
                 res.redirect('/');
             } else {

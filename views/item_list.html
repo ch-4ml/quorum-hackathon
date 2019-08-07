@@ -10,14 +10,25 @@
 
 <body>
     <h3>선택된 채권</h3>
-    <% total_value = 0; %>
-    <% for(i=0; i<data.item_data.length; i++) { %>
-    <p>
-        채권 명 : <%= data.item_data[i].item %> 채권 분류 : <%= data.item_data[i].category %>
-        <% var total_value = total_value + data.item_data[i].val; %>
-        <% } %>
-    </p>
-    채권 총액 : <%= total_value %>
+    <form method="post" action="/enroll_item">
+        <% total_value = 0; %>
+        <% for(i=0; i<data.item_data.length; i++) { %>
+        <p>
+            채권 명 : <%= data.item_data[i].item %> 채권 분류 : <%= data.item_data[i].category %>
+            <% var total_value = total_value + data.item_data[i].val; %>
+            <% } %>
+        </p>
+        
+        채권 총액 : <%= total_value %>
+        <input type="hidden" name="total_item_value" value="<%= total_value %>"> 
+        <input type="hidden" name="selected_item_list" value="<%=data.item_data%>">
+        <p>
+            가격 제안 : <input type="text" name="proposal" id="proposal">
+        </p>
+        <p>
+            <input type="submit" value="제출">
+        </p>
+    </form>
 </body>
 
 </html>

@@ -9,21 +9,26 @@
 </head>
 
 <body>
-    <p>
-        <a href="/item_list">상품</a>
-    </p>
-    <p>
-        <a href="/selected_item">상품 선택</a>
-    </p>
+    
     <p>
         <% if(data.loggined == false) { %>
         <a href="/login">로그인</a>
+        <a href="/register">회원가입</a>
         <% } else if (data.loggined == true) { %>
+            <% if (data.userData.dgrp === 'company') { %>
+                <p>
+                <a href="/item_proposal">상품 등록</a>
+            </p>
+            <% } else { %>
+                <p>
+                    <a href="/selected_item">상품 조회</a>
+                </p>
+            <% } %>
         <a href="/logout">로그아웃</a>
         <% } %>
     </p>
     <p>
-        <a href="/register">회원가입</a>
+
     </p>
 </body>
 
