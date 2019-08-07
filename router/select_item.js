@@ -29,31 +29,53 @@ myConnection.connect(function (err) {
 });
 
 
-router.get('/select_item', function (req, res) {
-    console.log('Select_item 접속')
-    res.render('select_item.html');
-});
-
-router.post('/select_process', function(req, res) {
-    console.log('Select_process 접속')
-    console.log(req.body.item)
-    // itemInfo = {
-    //     item_a: req.body.item_a,
-    //     item_b: req.body.item_b,
-    //     item_c: req.body.item_c,
-    //     min: req.body.min,
-    //     max: req.body.max
-    // }
-    var sql = `select * from bankdb where value between ${req.body.min} AND ${req.body.max}`;
-    console.log(sql);
+router.get('/selected_item', function (req, res) {
+    var sql = 'select item from bankdb where status = 0';
     myConnection.query(sql, function (err, results) {
-        if(err) {
-            console.log('bankdb Err' + err);
+        if (err) {
+            console.log('bankdb ' + err);
         }
-        console.log(results[0].item)
-        res.render('item_list.html', {data:results})
+        data_send = {
+            item_name:results,
+            item_leng: results.length
+        }
+        console.log(data_send.item_name)
+        res.render('select_item.html', { item_send: data_send})
     });
 });
 
+router.post('/select_process', function (req, res) {
+    console.log('Select_process 접속')
+    console.log(req.body.item)
+    var list = "";
+    function callSum(req) {
+        var i = 0;
+        while (i < req.body.item.length) {
+            list = list + `item = ` + `"${req.body.item[i]}"`;
+            if (i != req.body.item.length - 1) {
+                list = list + ` OR `
+            }
+            i++;
+        }
+        return list;
+    }
+    var condition = callSum(req);
+    var sql = `SELECT * from bankdb where (val between  ${req.body.min} AND ${req.body.max}) and  (${condition});`;
+    myConnection.query(sql, function (err, results) {
+        if (err) {
+            console.log('bankdb ' + err);
+        }
+        loan_data = {
+            item_data: results,
+        }
+        console.log(loan_data.item_data);
+        res.render('item_list.html', {data:loan_data})
+    });
+
+});
+
+router.get('/item_list', function(req, res) {
+
+})
 module.exports = router;
 

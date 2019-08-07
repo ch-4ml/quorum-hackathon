@@ -11,8 +11,9 @@
 <body>
     <form method="post" action="/register_process">
         ID <input type="text" name="userID" id="userID">
-        PW <input type="text" name="userPW" id="userPW">
+        PW <input type="password" name="userPW" id="userPW">
         <input type="hidden" name="distinct_num" value="<%= data.dnum %>">
+        <input type="hidden" name="distinct_group" value="<%= data.dgroup %>">
         <input type="submit" value="submit">
     </form>
 </body>

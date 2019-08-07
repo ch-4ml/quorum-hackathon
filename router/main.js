@@ -6,11 +6,8 @@ var url = require('url');
 var router = express.Router();
 var mysql = require('mysql');
 var myConnection = mysql.createConnection(require('../dbConfig'));
-// var callFunc = require('../model/funcdir.js');
-
 
 //session 설정
-// app.use(session({secret: 'ssshhhhh'}));
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 
@@ -35,15 +32,14 @@ router.get('/', function (req, res) {
     if (req.session.user) {
         data = {
             loggined: true,
+            userData: req.session.user,
         }
     } else {
         data = {
             loggined: false,
         }
     }
-    console.log(req.session.user);
     res.render('index.html', { data: data });
-    // res.render('index.html');
 });
 
 router.get('/login', function (req, res) {
@@ -52,16 +48,20 @@ router.get('/login', function (req, res) {
 
 router.post('/access_Selection', function (req, res) {
     if (req.body.name === '법인고객') {
+        var distinct_group = 'company';
         var distinct_num = 1;
         const data = {
-            dnum: distinct_num
+            dnum: distinct_num,
+            dgroup: distinct_group,
         }
         res.render('login.html', { data: data })
 
     } else if (req.body.name === '일반고객') {
+        var distinct_group = 'client';
         var distinct_num = 0;
         const data = {
-            dnum: distinct_num
+            dnum: distinct_num,
+            dgroup: distinct_group,
         }
         res.render('login.html', { data: data })
     } else {
@@ -70,8 +70,6 @@ router.post('/access_Selection', function (req, res) {
 });
 
 router.post('/login_process', function (req, res) {
-    console.log(req.body);
-    //session이 있을 경우 index.html
     const user = {
         insertedID: req.body.userID,
         insertedPW: req.body.userPW,
@@ -85,6 +83,7 @@ router.post('/login_process', function (req, res) {
                 console.log('법인고객 Login');
                 req.session.user = {
                     user: user.insertedID,
+                    
                 }
                 res.redirect('/');
             } else {
@@ -105,20 +104,7 @@ router.post('/login_process', function (req, res) {
         }
     });
 });
-//Test 해볼 것
-//     callFunc.callSQL(user).then(result => {
-//         console.log('result: ', result[0][0]);
-//         if(result[0][0] != undefined) {
-//             console.log('Already Loggined');
-//             res.redirect('/index.html');
-//         } else {
-//             req.session.user = {
-//                 user: result[0][0].insertedID,
-//             }
-//         }
-//         res.render('/index.html', {data:data} )
-//     });
-// });
+
 router.get('/logout', function (req, res) {
     if (req.session.user) {
         req.session.destroy(err => {
@@ -136,30 +122,43 @@ router.get('/register', function (req, res) {
 router.post('/register_Selection', function (req, res) {
     console.log(req.body);
     if (req.body.name === '법인고객') {
+        var distinct_group = 'company';
         var distinct_num = 1;
         const data = {
+            dgroup: distinct_group,
             dnum: distinct_num,
         }
         res.render('register.html', { data: data })
 
     } else if (req.body.name === '일반고객') {
+        var distinct_group = 'client';
         var distinct_num = 0;
         const data = {
+            dgroup: distinct_group,
             dnum: distinct_num,
         }
         res.render('register.html', { data: data })
     } else {
-        console.log('????');
+        //은행 분류 코드
+        var distinct_group = 'bank';
+        var distinct_num = 2;
+        const data = {
+            dgroup: distinct_group,
+            dnum: distinct_num,
+        }
+        res.render('register.html', { data: data })
     }
 });
 router.post('/register_process', function (req, res) {
     console.log(req.body.distinct_num)
+    console.log(req.body)
     if (req.body.distinct_num == 1) {
         var userID = req.body.userID;
         var userPW = req.body.userPW;
+        var groups = req.body.distinct_group;
         var status = 1;
-        var sql = 'insert into testdb (userID, userPW, status) values (?, ?, ?)';
-        myConnection.query(sql, [userID, userPW, status], function (err, data) {
+        var sql = 'insert into testdb (userID, userPW, groups, status) values (?, ?, ?, ?)';
+        myConnection.query(sql, [userID, userPW, groups, status], function (err, data) {
             if (err) {
                 console.log('Register Err :' + err);
             }
@@ -168,9 +167,10 @@ router.post('/register_process', function (req, res) {
     } else if (req.body.distinct_num == 0) {
         var userID = req.body.userID;
         var userPW = req.body.userPW;
+        var groups = req.body.distinct_group;
         var status = 0;
-        var sql = 'insert into testdb (userID, userPW, status) values (?, ?, ?)';
-        myConnection.query(sql, [userID, userPW, status], function (err, data) {
+        var sql = 'insert into testdb (userID, userPW,groups, status) values (?, ?, ?, ?)';
+        myConnection.query(sql, [userID, userPW, groups, status], function (err, data) {
             if (err) {
                 console.log('Register Err :' + err);
             }

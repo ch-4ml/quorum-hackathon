@@ -10,17 +10,17 @@
 
 <body>
     <p>
-        <a href="/item">상품</a>
+        <a href="/item_list">상품</a>
     </p>
     <p>
-    <% if(data.loggined == false) { %>
-        <a href="/login">로그인</a> 
-    <% } else if (data.loggined == true) { %>
-        <a href="/logout">로그아웃</a> 
-    <% } %>
+        <a href="/selected_item">상품 선택</a>
     </p>
     <p>
-        <a href="/select_item">상품 선택</a>
+        <% if(data.loggined == false) { %>
+        <a href="/login">로그인</a>
+        <% } else if (data.loggined == true) { %>
+        <a href="/logout">로그아웃</a>
+        <% } %>
     </p>
     <p>
         <a href="/register">회원가입</a>
