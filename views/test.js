@@ -1,0 +1,1 @@
+var json = [{investor: 'kshyeon123'}, {investor:'kang'}];

@@ -6,23 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script>
+        function myFunction(a) {
+            console.log(a);
+            var x = document.getElementById(a);
+            console.log(x)
+            if (x.style.visibility === 'hidden') {
+                x.style.visibility = 'visible';
+            } else {
+                x.style.visibility = 'hidden';
+            };
+        };
+    </script>
 </head>
 
 <body>
     <%- include ./index.html %>
-    <form method="post" action="/select_process">
-        <p>
-            상품 금액 : <input type="text" name="min" id="min" placeholder="Min"> ~ <input type="text" name="max" id="max"
-                placeholder="Max">
-        </p>
-        <% for(i=0; i<data.item_name.length; i++) { %>
-        <p>금융 상품 <%= data.item_name[i].item %> : <label><input type="checkbox" name="item"
-                    value="<%= data.item_name[i].item %>"></label></p>
-        <%  } %>
-        <p>
-            <input type="submit" value="제출">
-        </p>
-    </form>
+
+    <p>
+        <% for(i =0; i<data.item_name.length; i++) { %>
+        <button type="button" onclick="myFunction(`<%=data.item_name[i].category %>`)"><%=data.item_name[i].category %></button>
+        <% } %>
+
+        <form method="post" action="/select_process">
+            <p>
+                상품 금액 : <input type="text" name="min" id="min" placeholder="Min"> ~ <input type="text" name="max"
+                    id="max" placeholder="Max">
+            </p>
+
+            <% for(i=0; i<data.item_name.length; i++) { %>
+            <p id="<%=data.item_name[i].category %>"> <label>금융 상품 <%= data.item_name[i].item %> :<input
+                        type="checkbox" name="item" value="<%= data.item_name[i].item %>"></label>
+            </p>
+            <%  } %>
+            <p>
+                <input type="submit" value="제출">
+            </p>
+        </form>
 </body>
 
 </html>
