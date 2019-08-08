@@ -9,14 +9,15 @@
 </head>
 
 <body>
+    <%- include ./index.html %>
     <form method="post" action="/select_process">
         <p>
             상품 금액 : <input type="text" name="min" id="min" placeholder="Min"> ~ <input type="text" name="max" id="max"
                 placeholder="Max">
         </p>
-        <% for(i=0; i<item_send.item_name.length; i++) { %>
-        <p>금융 상품 <%= item_send.item_name[i].item %> : <label><input type="checkbox" name="item"
-                    value="<%= item_send.item_name[i].item %>"></label></p>
+        <% for(i=0; i<data.item_name.length; i++) { %>
+        <p>금융 상품 <%= data.item_name[i].item %> : <label><input type="checkbox" name="item"
+                    value="<%= data.item_name[i].item %>"></label></p>
         <%  } %>
         <p>
             <input type="submit" value="제출">

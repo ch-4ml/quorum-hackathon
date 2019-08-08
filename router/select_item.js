@@ -46,9 +46,10 @@ router.get('/selected_item', function (req, res) {
         }
         data_send = {
             item_name: results,
-            item_leng: results.length
+            item_leng: results.length,
+            userData: req.session.user,
         }
-        res.render('select_item.html', { item_send: data_send })
+        res.render('select_item.html', { data: data_send })
     });
 });
 
@@ -74,11 +75,9 @@ router.post('/select_process', function (req, res) {
         }
         loan_data = {
             item_data: results,
+            userData: req.session.user,
         }
         res.render('item_list.html', { data: loan_data })
-        function savedData(data) {
-
-        } 
     });
 
 });
@@ -126,6 +125,7 @@ router.get('/item_proposal', function(req, res) {
         }
         build_item = {
             item_data:results,
+            userData: req.session.user,
         }
         console.log(build_item.item_data)
         res.render('company_index.html', {data:build_item});
