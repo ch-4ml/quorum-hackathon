@@ -9,12 +9,11 @@
 </head>
 
 <body>
-    
     <p>
-        <% if(data.loggined == false) { %>
+        <% if(!data.userData) { %>
         <a href="/login">로그인</a>
         <a href="/register">회원가입</a>
-        <% } else if (data.loggined == true) { %>
+        <% } else { %>
             <% if (data.userData.dgrp === 'company') { %>
                 <p>
                 <a href="/item_proposal">상품 등록</a>

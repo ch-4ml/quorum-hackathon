@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <%- include index.html %>
     <h3>선택된 채권</h3>
     <form method="post" action="/enroll_item">
         <% total_value = 0; %>
@@ -22,7 +23,7 @@
 
         채권 총액 : <%= total_value %>
         <input type="hidden" name="selected_item_list" value="<%= JSON.stringify(data.item_data) %>">
-        <input type="hidden" name="total_item_value" value="<%= total_value %>"> 
+        <input type="hidden" name="total_item_value" value="<%= total_value %>">
         <p>
             가격 제안 : <input type="text" name="proposal" id="proposal">
         </p>

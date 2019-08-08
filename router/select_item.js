@@ -12,6 +12,15 @@ var myConnection = mysql.createConnection(require('../dbItem'));
 // app.use(session({secret: 'ssshhhhh'}));
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+// const loanData;
+
+// function setLoanData(data) {
+//     loanData = data;
+// }
+
+// function getLoanData() {
+//     return loanData;
+// }
 
 router.use(session({
     secret: 'keyboard cat',
@@ -67,6 +76,9 @@ router.post('/select_process', function (req, res) {
             item_data: results,
         }
         res.render('item_list.html', { data: loan_data })
+        function savedData(data) {
+
+        } 
     });
 
 });
@@ -118,6 +130,7 @@ router.get('/item_proposal', function(req, res) {
         console.log(build_item.item_data)
         res.render('company_index.html', {data:build_item});
     });
-});
+}); 
+
 module.exports = router;
 

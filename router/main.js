@@ -27,18 +27,9 @@ myConnection.connect(function (err) {
 });
 
 router.get('/', function (req, res) {
-
     //로그인 상태 확인
-    var loggined;
-    if (req.session.user) {
-        data = {
-            loggined: true,
-            userData: req.session.user,
-        }
-    } else {
-        data = {
-            loggined: false,
-        }
+    var data = {
+        userData: req.session.user,
     }
     console.log(data.userData)
     res.render('index.html', { data: data });
