@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <% include ./index.html %>
+    <% for(i=0; i<data.investor.length; i++) { %>
+    <form method="post" action="/build_item">
+
+        <p>
+            <label name="investor" value="<%= data.investor[i].investor %>">투자자 명 :
+                <%= data.investor[i].investor %></label>
+            <label name="proposal" value="<%= data.proposal[i].proposal %>">채권 투자 금액 :
+                <%= data.proposal[i].proposal %></label>
+        </p>
+
+        <% for (j=0; j < data.item_data.length; j++) { %>
+        <% if (data.investor[i].investor == data.item_data[j].investor) { %>
+        <% if(data.proposal[i].proposal == data.item_data[j].proposal) { %>
+        <p>
+            <label name="item" value="<%= data.item_data[j].item %>">채권 명 : <%= data.item_data[j].item %></label>
+            <label name="val" value="<%= data.item_data[j].val %>">채권 감정가 : <%= data.item_data[j].val %></label>
+            <label name="category" value="<%= data.item_data[j].category %>">채권 분류
+                :<%= data.item_data[j].category %></label>
+        </p>
+        <% } %>
+        <% } %>
+        <% } %>
+        <p>
+            <label><input type="checkbox">선택</label>
+        </p>
+        <input type="submit" value="확인">
+    </form>
+    <% } %>
+</body>
+
+</html>
+
+
+<% } else if(data.investor[i].investor == data.item_data[j].investor && data.proposal[i].proposal != data.item_data[j].proposal)  { %>
+    <p>
+        <label name="item" value="<%= data.item_data[j].item %>">채권 명 : <%= data.item_data[j].item %></label>
+        <label name="val" value="<%= data.item_data[j].val %>">채권 감정가 : <%= data.item_data[j].val %></label>
+        <label name="category" value="<%= data.item_data[j].category %>">채권 분류 :<%= data.item_data[j].category %></label>
+    </p>
+    <% } else { %>
+    <p>
+        <label name="item" value="<%= data.item_data[j].item %>">채권 명 : <%= data.item_data[j].item %></label>
+        <label name="val" value="<%= data.item_data[j].val %>">채권 감정가 : <%= data.item_data[j].val %></label>
+        <label name="category" value="<%= data.item_data[j].category %>">채권 분류 :<%= data.item_data[j].category %></label>
+    </p>

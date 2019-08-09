@@ -37,52 +37,73 @@ myConnection.connect(function (err) {
     console.log('MySQL Connection Complete_select_item');
 });
 //function
-var unique_array = [];
-function uniqueArray(results) {
+var unique_array1 = [];
+var unique_array2 = [];
+function uniqueArray1(results) {
     for (i = 0; i < results.length; i++) {
 
-        unique_array[i] = results[i].investor
+        unique_array1[i] = results[i].investor
 
     }
-    return unique_array;
+    return unique_array1;
 }
-function fn_jsonArray(investor_array) {
-        var keyArray = new Array();
-        var investor = new Object();
-        for (i = 0; i < investor_array.length; i++) {
-            if (investor_array[i] != null && investor_array[i] != undefined && investor_array[i] != "") {
-                keyArray.push({ investor: investor_array[i] });
-            }
-        }
-        return keyArray;
+function uniqueArray2(results) {
+    for (i = 0; i < results.length; i++) {
+
+        unique_array2[i] = results[i].proposal
+
     }
+    return unique_array2;
+}
+function fn_jsonArray1(investor_array1) {
+    var keyArray = new Array();
+    var investor = new Object();
+    for (i = 0; i < investor_array1.length; i++) {
+        if (investor_array1[i] != null && investor_array1[i] != undefined && investor_array1[i] != "") {
+            keyArray.push({ investor: investor_array1[i] });
+        }
+    }
+    return keyArray;
+}
+function fn_jsonArray2(investor_array2) {
+    var keyArray = new Array();
+    var investor = new Object();
+    for (i = 0; i < investor_array2.length; i++) {
+        if (investor_array2[i] != null && investor_array2[i] != undefined && investor_array2[i] != "") {
+            console.log(investor_array2[i])
+            keyArray.push({ proposal: investor_array2[i] });
+        }
+    }
+    return keyArray;
+}
 
-    // var investedJson = fn_jsonArray();
+// var investedJson = fn_jsonArray();
 
-    // function fn_jsonMake() {
-    //     var keyArray = new Array();
-    //     var investor = new Object();
-    //     for (i = 0; i < investedJson.length; i++) {
-    //         for (j = 0; j < results.length; j++) {
-    //             // if (results[i] != null && results[i] != undefined && results[i] != "") {}
-    //             if (investedJson[i].investor == results[j].investor) {
-    //                 console.log(investedJson[0].investor)
-    //                 console.log(results[2].investor)
-    //                 keyArray.add({ item: results[j].item });
-                    
+// function fn_jsonMake() {
+//     var keyArray = new Array();
+//     var investor = new Object();
+//     for (i = 0; i < investedJson.length; i++) {
+//         for (j = 0; j < results.length; j++) {
+//             // if (results[i] != null && results[i] != undefined && results[i] != "") {}
+//             if (investedJson[i].investor == results[j].investor) {
+//                 console.log(investedJson[0].investor)
+//                 console.log(results[2].investor)
+//                 keyArray.add({ item: results[j].item });
 
 
-    //             }
-    //         }
-    //     }
-    //     console.log(keyArray)
-    //     return keyArray;
-    // }
-    // var investJson = fn_jsonMake();
-    // console.log(investJson)
+
+//             }
+//         }
+//     }
+//     console.log(keyArray)
+//     return keyArray;
+// }
+// var investJson = fn_jsonMake();
+// console.log(investJson)
 
 
 router.get('/selected_item', function (req, res) {
+    console.log(req.body)
     var sql = 'select item, category from bankdb where status = 0';
     myConnection.query(sql, function (err, results) {
         if (err) {
@@ -93,8 +114,6 @@ router.get('/selected_item', function (req, res) {
             item_leng: results.length,
             userData: req.session.user,
         }
-        console.log(data_send.item_name)
-        console.log(data_send.userData)
         res.render('select_item.html', { data: data_send })
     });
 });
@@ -115,7 +134,8 @@ router.post('/select_process', function (req, res) {
         return list;
     }
     var condition = callSum(req);
-    var sql = `SELECT * from bankdb where (val between  ${req.body.min} AND ${req.body.max}) and  (${condition}); and status = 0`;
+    var sql = `SELECT * from bankdb where val between ${req.body.min} AND ${req.body.max} AND (${condition})  AND (status = 0)`;
+    console.log(sql) 
     myConnection.query(sql, function (err, results) {
         if (err) {
             console.log('bankdb ' + err);
@@ -165,30 +185,40 @@ router.post('/enroll_item', function (req, res) {
 });
 
 router.get('/item_proposal', function (req, res) {
-
-    var sql_2 = `SELECT item, val, category,investor, proposal FROM bankdb WHERE status = 1`;
-    myConnection.query(sql_2, function (err, results) {
-        if (err) {
-            console.log('bankdb_investor load ' + err)
-        }
-        // 중복 투자자 제거 함수
-        var unique_index = uniqueArray(results);
-        var investor_array = unique_index.filter(function (value, index, self) {
-            return self.indexOf(value) === index;
-        });
-        console.log(investor_array.length)
-        var investedJson = fn_jsonArray(investor_array);
-        // 
-        build_item = {
-            item_data: results,
-            userData: req.session.user,
-            investor: investedJson
-
-        }
+    var sql = `SELECT investor, proposal FROM bankdb GROUP BY investor, proposal`; 
+    myConnection.query(sql, function(err, results) {
         
-        console.log(build_item.item_data[0].investor)
-        console.log(investedJson[0].investor)
-        res.render('item_proposal.html', { data: build_item });
+    })
+
+
+    // var sql_2 = `SELECT item, val, category,investor, proposal FROM bankdb WHERE status = 1`;
+    // myConnection.query(sql_2, function (err, results) {
+    //     if (err) {
+    //         console.log('bankdb_investor load ' + err)
+    //     }
+    //     // 중복 투자자 제거 함수
+    //     var unique_index = uniqueArray1(results);
+    //     var investor_array1 = unique_index.filter(function (value, index, self) {
+    //         return self.indexOf(value) === index;
+    //     });
+    //     var unique_index = uniqueArray2(results);
+    //     var investor_array2 = unique_index.filter(function (value, index, self) {
+    //         return self.indexOf(value) === index;
+    //     });
+    //     var investedJson = fn_jsonArray1(investor_array1);
+    //     var investedPro = fn_jsonArray2(investor_array2);
+    //     build_item = {
+    //         item_data: results,
+    //         investor: investedJson,
+    //         proposal: investedPro,
+    //         userData: req.session.user,
+    //     }
+    //     res.render('item_proposal.html', { data: build_item });
     });
 });
+
+router.post('/build_item', function(req, res) {
+    console.log(req.body)
+    res.send();
+})
 module.exports = router;
