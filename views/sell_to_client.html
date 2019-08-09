@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <%- include ./index.html %>
+    <h2>채권 판매 허가</h2>
+    <hr>
+    <form method="post" action="/confirm">
+        <% for(i=0; i < data.bonds.length; i++) { %>
+        <p>
+            채권 명 : <%= data.bonds[i].item %> 채권 분류 : <%= data.bonds[i].category %> 채권 감정액 : <%= data.bonds[i].val %> 투자
+            금액: <%= data.bonds[i].proposal %> 투자자 ID : <%= data.bonds[i].investor %> 채권자 ID : <%= data.bonds[i].creditor %>
+            <input type="checkbox" name="item" value="<%= data.bonds[i].id %>">
+        </p>
+        <% } %>
+        매입 제안 가격 : <input type="text" name="com_proposal" id="proposal">
+        <input type="submit" value="확인">
+    </form>
+</body>
+
+</html>

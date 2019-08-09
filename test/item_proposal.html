@@ -11,19 +11,21 @@
 <body>
 
     <% include ./index.html %>
-    <%= console.log(data.investData) %>
-    <% for(i=0; i<data.investData.length; i++) { %>
+    
+    <% var investing = data.investData %>
+    <% var loaning = data.loanData %>
+    <% for(i=0; i < investing.length; i++) { %>
     <form method="post" action="/build_item">
-        <input type="hidden" name="investData1" value="<%= JSON.stringify(JSON.parse(data.investData[i])) %>">
-        투자자 명 : <%= JSON.parse(data.investData[i].investor) %>
-        투자 금액 : <%= JSON.parse(data.investData[i].proposal) %>
-        <% for(j=0; j<data.loanData.length; j++) { %>
-        <% if(JSON.parse(data.investData[i].investor_ == JSON.parse(data.loanData[j].investor) && JSON.parse(data.investData[i].proposal) == JSON.parse(data.loanData[j].proposal)) { %>
-        <input type="hidden" name="loanData" value="<%= JSON.stringify(JSON.parse(data.loanData[j])) %>">
+        <input type="hidden" name="investedData" value="<%= investing[i] %>">
+        투자자 명 : <%= investing[i].investor %>
+        투자 금액 : <%= investing[i].proposal %>
+        <% for(j=0; j<loaning.length; j++) { %>
+        <% if(investing[i].investor == loaning[j].investor && investing[i].proposal == loaning[j].proposal) { %>
+        <input type="hidden" name="loanedData" value="<%= loaning[j].id %>">
         <p>
-            투자 상품 : <%= JSON.parse(data.loanData[j].item) %>
-            투자 금액 : <%= JSON.parse(data.loanData[j].val) %>
-            상품 분류 : <%= JSON.parse(data.loanData[j].category) %>
+            투자 상품 : <%= loaning[j].item %>
+            투자 금액 : <%= loaning[j].val %>
+            상품 분류 : <%= loaning[j].category %>
         </p>
         <% } %>
         <% } %>

@@ -11,30 +11,23 @@
 <body>
 
     <% include ./index.html %>
-    
+
     <% var investing = data.investData %>
     <% var loaning = data.loanData %>
-
-    <%= console.log(loaning) %>
-    <%= console.log(investing) %>
-    <% for(i=0; i<investing.length; i++) { %>
+    <% var user = data.userData.id %>
     <form method="post" action="/build_item">
-        <input type="hidden" name="investedData" value="<%= JSON.stringify(investing[i]) %>">
-        투자자 명 : <%= investing[i].investor %>
-        투자 금액 : <%= investing[i].proposal %>
         <% for(j=0; j<loaning.length; j++) { %>
-        <% if(investing[i].investor == loaning[j].investor && investing[i].proposal == loaning[j].proposal) { %>
-        <input type="hidden" name="loanedData" value="<%= JSON.stringify(loaning[j]) %>">
         <p>
+            투자자 ID : <%= loaning[j].id %>
+            투자 금액 : <%= loaning[j].proposal %>
             투자 상품 : <%= loaning[j].item %>
-            투자 금액 : <%= loaning[j].val %>
+            채권 감정액 : <%= loaning[j].val %>
             상품 분류 : <%= loaning[j].category %>
+            <input type="checkbox" name="loanedData" value="<%= loaning[j].id %>">
         </p>
         <% } %>
-        <% } %>
-        <input type="submit" value="확인">
+        <input type="submit" value="제출">
     </form>
-    <% } %>
 </body>
 
 </html>

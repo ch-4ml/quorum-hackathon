@@ -15,15 +15,24 @@
         <a href="/login">로그인</a>
         <a href="/register">회원가입</a>
         <% } else { %>
-        <% if (data.userData.dgrp === 'company') { %>
+        <% if (data.userData.dnum === 1) { %>
         <p>
-            <a href="/item_proposal">채권 판매</a>
+            <a href="/item_proposal">채권 구매 신청</a>
         </p>
-        <%} else if (data.userData.dgrp === 'client') { %>
         <p>
-            <a href="/selected_item">상품 조회</a>
+            <a href="/item_sell_to_investor">채권 판매</a>
         </p>
-        <% } else if (data.userData.dgrp === 'bank') { %>
+        <%} else if (data.userData.dnum === 2) { %>
+        <p>
+            <a href="/selected_item">채권 조회</a>
+        </p>
+        <p>
+            <a href="/confirm_complete">채권 구매</a>
+        </p>
+        <% } else if (data.userData.dnum === 0) { %>
+        <p>
+            <a href="/sell_confirm">판매 허가</a>
+        </p>
         <p>
             <a href="/item_enroll">채권 등록</a>
         </p>
