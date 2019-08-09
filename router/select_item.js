@@ -20,7 +20,7 @@ myConnection.connect(function (err) {
     console.log('MySQL Connection Complete_select_item');
 });
 
-//수정
+//은행에 등록된 채권 조건으로 조회
 router.get('/selected_item', function (req, res) {
     var sql = 'select id, item, category, val from bankdb where status = 1';
     myConnection.query(sql, function (err, results) {
@@ -34,7 +34,7 @@ router.get('/selected_item', function (req, res) {
         res.render('select_item.html', { data: data });
     });
 });
-
+//조건에 부합하는 채권 로드
 router.post('/select_process', function (req, res) {
     console.log(req.body.min)
     var stmt = "";
@@ -59,7 +59,7 @@ router.post('/select_process', function (req, res) {
     });
 
 });
-
+//투자자의 채권 구매 신청
 router.post('/sell_item', function (req, res) {
     console.log(req.body)
     var stmt = "";
@@ -68,7 +68,7 @@ router.post('/sell_item', function (req, res) {
         stmt = stmt + `id = ${id[i]}`;
         if (i < req.body.item.length - 1) stmt = stmt + " OR ";
     }
-    var sql = `UPDATE bankdb SET status = 2, investor = "${req.session.user.id}", proposal = ${req.body.proposal} where ${stmt}`;
+    var sql = `UPDATE bankdb SET status = 1, investor = "${req.session.user.id}", proposal = ${req.body.proposal} where ${stmt}`;
     myConnection.query(sql, function (err, results) {
         if (err) {
             console.log('bankdb update ' + err);
@@ -110,7 +110,7 @@ router.post('/build_item', function (req, res) {
         stmt = stmt + `id = ${id[i]}`;
         if (i < req.body.loanedData.length - 1) stmt = stmt + " OR ";
     }
-    var sql = `UPDATE bankdb SET status = 3, requestor = ${req.body.user.id} where ${stmt}`
+    var sql = `UPDATE bankdb SET status = 3, requestor = ${req.session.user.id} where ${stmt}`
     myConnection.query(sql, function (err, results) {
         if (err) {
             console.log('item unselled ' + err);
@@ -118,6 +118,8 @@ router.post('/build_item', function (req, res) {
         res.redirect('/');
     });
 });
+
+//은행의 채권 등록
 router.get('/item_enroll', function (req, res) {
     var sql = `SELECT * FROM bankdb WHERE status=0`;
     myConnection.query(sql, function (err, results) {
@@ -131,6 +133,7 @@ router.get('/item_enroll', function (req, res) {
         res.render('all_item.html', { data: data });
     });
 });
+//은행의 채권 등록
 router.post('/show_item', function (req, res) {
     console.log(req.body.item)
     var stmt = "";
@@ -148,6 +151,7 @@ router.post('/show_item', function (req, res) {
     });
     console.log('채권 블록체인 등록')
 });
+//채권 판매 허가
 router.get('/sell_confirm', function(req, res) {
     var sql = `SELECT * FROM bankdb WHERE status = 3`;
     myConnection.query(sql, function(err, results) {
@@ -178,7 +182,7 @@ router.post('/confirm_complete', function(req, res) {
         res.redirect('/');
     });
 });
-
+//매입기관의 채권-> 투자자 판매
 router.get('/item_sell_to_investor', function(req, res) {
     var sql = `SELECT id, item, category, val, proposal, investor, creditor FROM bankdb WHERE status = 4`;
     myConnection.query(sql, function(err, results) {
@@ -201,18 +205,30 @@ router.post('/confirm', function(req, res) {
         stmt = stmt + `id = ${id[i]}`;
         if (i < req.body.item.length - 1) stmt = stmt + " OR ";
     }
-    var sql = `UPDATE bankdb SET com_proposal= ${req.body.com_proposal} where id = ${req.body.item}`;
+    var sql = `UPDATE bankdb SET status = 5, com_proposal= ${req.body.com_proposal} where id = ${req.body.item}`;
     console.log(sql)
     myConnection.query(sql, function(err, results) {
         if(err) {
             console.log('매입기관에서 투자자 채권 판매 Err');
         }
-        data = {
-            bonds:results,
-            userData:req.session.user
-        }
-        res.render('contract.html', {data:data})
+        res.redirect('/');
     });
 });
 
+router.get('/contract', function(req, res) {
+    var sql = `SELECT * FROM bankdb WHERE status = 5`;
+    myConnection.query(sql, function(err, results) {
+        if(err) {
+            console.log('매입 확인 load 불가')
+        }
+        data = {
+            bonds: results,
+            userData: req.session.user
+        }
+        res.render('contract.html');
+    });
+});
+// router.post('/complete', function(req, res) {
+//     var sql = `UPDATE bankdb SET status = 6 where id = `
+// })
 module.exports = router;

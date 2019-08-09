@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+
+            $("#requestBtn").on("click", function () {
+                var min = $('#min').val();
+                var max = $('#max').val();
+
+                if (min == null && max == null) {
+                    min = 0;
+                    max = 99999999;
+                } else if (min == null) {
+                    min = 0;
+                } else if (max == null) {
+                    max = 99999999;
+                }
+                var inputerchi = $("#inputer").children();
+                inputerchi.each(function (i) {
+                    if (max >= i.attr('class') && min <= i.attr('class')) {
+                        show();
+                    } else {
+                        hide();
+                    }
+
+                });
+
+            });
+
+        });
+
+
+    </script>
+    <style>
+        /* .jumbotron{
+     
+    } */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form class="form-horizontal" method="GET" name="#">
+            <div class="form-group row">
+                <p class=".text-muted">금액:<input id="min" type="text" class=".col-md-1"
+                        onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />~
+                    <input id="max" type="text" class=".col-md-1"
+                        onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"></p>
+                <input type="button" value="전송" id="requestBtn" class="form-group btn btn-warning">
+            </div>
+        </form>
+    </div>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>item</th>
+                    <th>val</th>
+                    <th>specification</th>
+                    <th>status</th>
+                    <th>catepory</th>
+                    <th>investor(투자자 빼도될??)</th>
+                    <th>propersal</th>
+                    <th>creator</th>
+                </tr>
+            </thead>
+
+            <tbody id="inputer">
+                <tr class="가격">
+                    <td class="id">1</td>
+                    <td class="item">loan_1</td>
+                    <td class="val">10000</td>
+                    <td class="specification">ref</td>
+                    <td class="status">0</td>
+                    <td class="catepory">credit_loan</td>
+                    <td class="investor">kang</td>
+                    <td class="propersal">null</td>
+                    <td class="creator">bank</td>
+                    <td><input type="button" value="허가" onclick="linking(/*여기에서 데이타 넣어 예: id 칼럼 */)"></td>
+                </tr>
+
+            </tbody>
+
+
+
+        </table>
+        <button type="button" class="btn btn-warning" onclick='history.back(); return false;'>뒤로</button>
+    </div>
+</body>
+
+</html>

@@ -2,46 +2,57 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset='utf-8'>
+    <title>index</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <p>
+    <div class="jumbotron">
+        <div class="container">
+            <% if(!data.userData) { %>
+            <button type="button" class="btn btn-info" onclick="location.href='/login' ">로그인</button>
 
-        <% if(!data.userData) { %>
-        <a href="/login">로그인</a>
-        <a href="/register">회원가입</a>
-        <% } else { %>
-        <% if (data.userData.dnum === 1) { %>
-        <p>
-            <a href="/item_proposal">채권 구매 신청</a>
-        </p>
-        <p>
-            <a href="/item_sell_to_investor">채권 판매</a>
-        </p>
-        <%} else if (data.userData.dnum === 2) { %>
-        <p>
-            <a href="/selected_item">채권 조회</a>
-        </p>
-        <p>
-            <a href="/confirm_complete">채권 구매</a>
-        </p>
-        <% } else if (data.userData.dnum === 0) { %>
-        <p>
-            <a href="/sell_confirm">판매 허가</a>
-        </p>
-        <p>
-            <a href="/item_enroll">채권 등록</a>
-        </p>
-        <% } %>
-        <a href="/logout">로그아웃</a>
-        <% } %>
-        <p>
-            <a href="../">뒤로</a>
-        </p>
+            <button type="button" class="btn btn-warning" onclick="location.href='/register' ">회원가입</button>
+            
+            <% } else { %>
+            <% if (data.userData.dnum === 1) { %>
+            <p>
+                    <button type="button" class="btn btn-info" onclick="location.href='/item_proposal' ">채권 구매 신청</button>
+
+            </p>
+            <p>
+                    <button type="button" class="btn btn-info" onclick="location.href='/item_sell_to_investor'">채권 판매</button>
+
+            </p>
+            <%} else if (data.userData.dnum === 2) { %>
+            <p>
+                    <button type="button" class="btn btn-info" onclick="location.href='/selected_item'">채권 조회</button>
+            </p>
+            <p>
+                    <button type="button" class="btn btn-info" onclick="location.href='/contract'">채권 구매</button>
+            </p>
+            <% } else if (data.userData.dnum === 0) { %>
+            <p>
+                    <button type="button" class="btn btn-info" onclick="location.href='/sell_confirm'">판매 허가</button>
+            </p>
+            <p>
+                    <button type="button" class="btn btn-info" onclick="location.href='/item_enroll'">채권 등록</button>
+            </p>
+            <% } %>
+            <button type="button" class="btn btn-info" onclick="location.href='/logout'">로그아웃</button>
+
+            <% } %>
+            <p>
+                <br>
+                    <button type="button" class="btn btn-info" onclick='history.back(); return false;'>뒤로</button>
+            </p>
+        </div>
+    </div>
 </body>
 
 </html>

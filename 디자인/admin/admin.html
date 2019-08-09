@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function linking(id) {
+            location.href =;/* 라우터넣은 다음에 파라미터 id 로 넣어  update 라우터넣고 */
+        // 업데이트를 끝내고 난뒤에 html  리다이렉트:
+    };
+
+    </script>
+    <style>
+        /* .jumbotron{
+     
+    } */
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>item</th>
+                    <th>val</th>
+                    <th>specification</th>
+                    <th>status</th>
+                    <th>catepory</th>
+                    <th>investor(투자자 빼도될??)</th>
+                    <th>propersal</th>
+                    <th>creator</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="inputer"> /*여기서 json 형식 넣어 주면됨 for 리스트 해줘서 예:append("<tr></tr>") */
+                <tr>
+                    <td>1</td>
+                    <td>loan_1</td>
+                    <td>10000</td>
+                    <td>ref</td>
+                    <td>0</td>
+                    <td>credit_loan</td>
+                    <td>kang</td>
+                    <td>null</td>
+                    <td>bank</td>
+                    <td><input type="button" value="허가" onclick="linking(/*여기에서 데이타 넣어 예: id 칼럼 */)"></td>
+                </tr>
+
+            </tbody>
+
+
+
+        </table>
+        <button type="button" class="btn btn-warning" onclick='history.back(); return false;'>뒤로</button>
+    </div>
+
+</body>
+
+</html>

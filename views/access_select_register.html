@@ -1,17 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+        <meta charset='utf-8'>
+        <title>Page Title</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
+        <div class="container">
         <h2>회원가입 대상을 선택해 주세요</h2>
         <hr>
     <form method="post" action="/register_Selection">
-    <input type="submit" id="userCom" name="name" value="법인고객">
-    <input type="submit" id="userNor" name="name" value="일반고객"> 
+    <input type="submit" class="btn btn-primary" id="userCom" name="name" value="법인고객">
+    <input type="submit" class="btn btn-primary" id="userNor" name="name" value="일반고객"> 
+    <button type="button" class="btn btn-info" onclick='history.back(); return false;'>뒤로</button>
+
     </form>
+    </div>
 </body>
 </html>

@@ -2,19 +2,30 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+        <title>register</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
 </head>
 
-<body><h2>회원가입</h2>
-    <form method="post" action="/register_process">
-        ID <input type="text" name="userID" id="userID">
-        PW <input type="password" name="userPW" id="userPW">
-        <input type="hidden" name="distinct_num" value="<%= data.dnum %>">
-        <input type="submit" value="submit">
-    </form>
-</body>
+<body>
 
+        <div class="container">
+            <h2>회원가입</h2>
+    
+            <hr class="two_1">
+            <form action="/register_process" method="post" class="form-inline" role="form">
+                <p class=".text-muted">ID:<input name="" type="text" class="form-control"></p>
+                <p class=".text-muted">PW:<input name="" type="password" class="form-control"></p>
+                <input type="hidden" name="distinct_num" value="<%= data.dnum %>">
+                
+                <button type="submit" class="btn btn-warning">회원가입</button>
+            </form>
+    
+            <button type="button" class="btn btn-info" onclick='history.back(); return false;'>뒤로</button>
+        </div>
+    
+    </body>
 </html>
