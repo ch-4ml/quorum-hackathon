@@ -12,7 +12,7 @@
         <%= console.log(data.item_data[0].item) %>
     <%- include index.html %>
     <h3>선택된 채권</h3>
-    <form method="post" action="/enroll_item">
+    <form method="post" action="/sell_item">
         <% total_value = 0; %>
         <% for(i=0; i<data.item_data.length; i++) { %>
                 <%= console.log(data.item_data[i].item) %>

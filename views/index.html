@@ -17,11 +17,15 @@
         <% } else { %>
         <% if (data.userData.dgrp === 'company') { %>
         <p>
-            <a href="/item_proposal">상품 등록</a>
+            <a href="/item_proposal">채권 판매</a>
         </p>
-        <% } else { %>
+        <%} else if (data.userData.dgrp === 'client') { %>
         <p>
             <a href="/selected_item">상품 조회</a>
+        </p>
+        <% } else if (data.userData.dgrp === 'bank') { %>
+        <p>
+            <a href="/item_enroll">채권 등록</a>
         </p>
         <% } %>
         <a href="/logout">로그아웃</a>

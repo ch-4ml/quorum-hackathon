@@ -40,6 +40,7 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/access_Selection', function (req, res) {
+    console.log(req.body.name)
     if (req.body.name === '법인고객') {
         var distinct_group = 'company';
         var distinct_num = 1;
@@ -52,6 +53,14 @@ router.post('/access_Selection', function (req, res) {
     } else if (req.body.name === '일반고객') {
         var distinct_group = 'client';
         var distinct_num = 0;
+        const data = {
+            dnum: distinct_num,
+            dgroup: distinct_group,
+        }
+        res.render('login.html', { data: data })
+    } else if (req.body.name === '관리자') {
+        var distinct_group = 'bank';
+        var distinct_num = 2;
         const data = {
             dnum: distinct_num,
             dgroup: distinct_group,
@@ -97,8 +106,20 @@ router.post('/login_process', function (req, res) {
             } else {
                 console.log('login 실패');
             }
+        } else if (user.distinct_group === 'bank') {
+            if (results[0].userID == user.insertedID && results[0].userPW == user.insertedPW) {
+                console.log('관리자 Login');
+                req.session.user = {
+                    user: user.insertedID,
+                    dnum: user.distinct_num,
+                    dgrp: user.distinct_group,
+                }
+                res.redirect('/');  
+            } else {
+                console.log('login 실패');
+            }
         } else {
-            console.log("????");
+            console.log("로그인 그룹 불명");
         }
     });
 });

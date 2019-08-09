@@ -149,7 +149,7 @@ router.post('/select_process', function (req, res) {
 
 });
 
-router.post('/enroll_item', function (req, res) {
+router.post('/sell_item', function (req, res) {
     console.log('bankdb변경 & company db로 전달')
     console.log(req.session.user.user);
     var retrieved_data = JSON.parse(req.body.selected_item_list);
@@ -231,6 +231,8 @@ router.post('/build_item', function (req, res) {
         res.redirect('/');
     });
 });
+router.get('/item_enroll')
+
 
 module.exports = router;
 
