@@ -17,10 +17,10 @@
         <h2>회원가입</h2>
 
         <hr class="two_1">
-        <form action="" name="" method="post" class="form-inline" role="form">
+        <form action="/register_process" method="post" class="form-inline" role="form">
             <p class=".text-muted">ID:<input name="" type="text" class="form-control"></p>
             <p class=".text-muted">PW:<input name="" type="password" class="form-control"></p>
-
+            <input type="hidden" name="distinct_num" value="<%= data.dnum %>">
             
             <button type="submit" class="btn btn-warning">회원가입</button>
         </form>
