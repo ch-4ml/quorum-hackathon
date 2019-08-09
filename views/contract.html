@@ -1,26 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <%- include ./index.html %>
-    <h2>채권 거래 확인</h2>
-    <hr>
-    <form method="post" action="/complete">
-    <% for(i=0; i < data.bonds.length; i++) { %>
-        <p>
-            채권 명 : <%= data.bonds[i].item %> 채권 분류 : <%= data.bonds[i].category %> 채권 감정액 : <%= data.bonds[i].val %> 투자
-            금액: <%= data.bonds[i].proposal %> 투자자 ID : <%= data.bonds[i].investor %> 채권자 ID : <%= data.bonds[i].creditor %> 매입기관 제안 금액 : <%= data.bonds[i].com_proposal %>
-            <% if(data.userData.dnum == 2) { %>
-            <input type="checkbox" name="item" value="<%= data.bonds[i].id %>">
-            <input type="submit" value="거래 확정">
-        </p>
-        <% } %>
-    <% } %>
-</form>
+    <div class="container">
+
+
+        <h2>채권 거래 확인</h2>
+        <hr>
+        <form method="post" action="/complete">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>채권 명</th>
+                        <th>채권 분류 </th>
+                        <th>채권 감정액</th>
+                        <th>투자 금액</th>
+                        <th>투자자 ID</th>
+                        <th>채권자 ID</th>
+                        <th>매입기관 제안 금액</th>
+                        <th>체크</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(i=0; i < data.bonds.length; i++) { %>
+                    <tr>
+
+                        <td><%= data.bonds[i].item %></td>
+                        <td><%= data.bonds[i].category %></td>
+                        <td><%= data.bonds[i].val %></td>
+                        <td><%= data.bonds[i].proposal %></td>
+                        <td><%= data.bonds[i].investor %></td>
+                        <td><%= data.bonds[i].creditor %></td>
+                        <td align="center"><%= data.bonds[i].com_proposal %></td>
+
+                        <td><input type="radio" name="item" value="<%= data.bonds[i].id %>"
+                                class="custom-control-input"></td>
+
+
+
+                    </tr>
+                    <% } %>
+                </tbody>
+            </table>
+            <p><input type="submit" value="거래 확정" class="btn btn-info"></p>
+        </form>
+    </div>
 </body>
+
 </html>

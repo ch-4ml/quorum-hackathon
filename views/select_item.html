@@ -2,30 +2,54 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <%- include ./index.html %>
+    <div class="container">
+        <%- include ./index.html %>
 
-    <p>
-        <form method="post" action="/select_process">
-            <p>
-                상품 금액 : <input type="text" name="min" id="min" placeholder="Min"> ~ <input type="text" name="max" id="max" placeholder="Max">
-            </p>
 
-            <% for(i=0; i < data.bonds.length; i++) { %>
+        <form method="post" action="/select_process" class="form-inline" role="form">
             <p>
-                <label>금융 상품 <%= data.bonds[i].item %> :<input type="checkbox" name="item" value="<%= data.bonds[i].id %>"></label>
+                상품 금액 : <input type="text" name="min" class=".col-md-1"
+                    onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" id="min" placeholder="Min"> ~ <input
+                    type="text" name="max" id="max" placeholder="Max"
+                    onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" class=".col-md-1">
             </p>
-            <% } %>
-            <p>
-                <input type="submit" value="제출">
-            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>금융 상품</th>
+                        <th>체크</th>
+                    </tr>
+                </thead>
+                <tbody id="inputer">
+
+                    부동산 담보 채권 <input type="checkbox"> 개인신용채권 <input type="checkbox"> 공사대금 <input type="checkbox">
+
+                    <% for(i=0; i < data.bonds.length; i++) { %>
+                    <tr>
+                        <td> <%= data.bonds[i].item %> :</td>
+                        <td><input type="checkbox" name="item" class="custom-control-input"
+                                value="<%= data.bonds[i].id %>"></td>
+                    </tr>
+
+
+                    <% } %>
+
+
+                </tbody>
+            </table>
+            <input type="submit" class="btn btn-info" value="제출">
         </form>
+    </div>
 </body>
 
 </html>

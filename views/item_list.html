@@ -2,31 +2,52 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <meta charset='utf-8'>
+    <title>Page Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 
 <body>
     <%- include index.html %>
-    <h3>채권 선택</h3>
-    <form method="post" action="/sell_item">
-        <% total_value = 0; %>
-        <% for(i=0; i < data.bonds.length; i++) { %>
-        <p>
-            채권 명 : <%= data.bonds[i].item %> 채권 분류 : <%= data.bonds[i].category %> 채권 가격 : <%= data.bonds[i].val %>
-            <input type="radio" name="item" value="<%= data.bonds[i].id %>">
+    <div class="container">
+        <h3>채권 등록</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>채권 명</th>
+                    <th>채권 분류</th>
+                    <th>채권 가격</th>
+                </tr>
+            </thead>
+            <form method="post" action="/sell_item">
+                <tbody>
 
-            <% } %>
-            <p>
-                가격 제안 : <input type="text" name="proposal" id="proposal">
-            </p>
-        </p>
-        <p>
-            <input type="submit" value="제출">
-        </p>
-    </form>
+                    <% total_value = 0; %>
+                    <% for(i=0; i < data.bonds.length; i++) { %>
+                    <tr>
+                        <td><%= data.bonds[i].item %></td>
+                        <td><%= data.bonds[i].category %></td>
+                        <td> <%= data.bonds[i].val %></td>
+                        <td><input type="radio" name="item" class="custom-control-input" value="<%= data.bonds[i].id %>"></td>
+                    </tr>
+
+
+                    <% } %>
+                </tbody>
+               
+                    가격 제안 : <input type="text" class=".col-md-1" name="proposal" id="proposal">
+               
+              
+                
+                    <input type="submit" class="btn btn-succes" value="제출">
+               
+            </form>
+        </table>
+    </div>
 </body>
 
 </html>

@@ -16,17 +16,36 @@
     <% var loaning = data.loanData %>
     <% var user = data.userData.id %>
     <form method="post" action="/build_item">
-        <% for(j=0; j<loaning.length; j++) { %>
-        <p>
-            투자자 ID : <%= loaning[j].id %>
-            투자 금액 : <%= loaning[j].proposal %>
-            투자 상품 : <%= loaning[j].item %>
-            채권 감정액 : <%= loaning[j].val %>
-            상품 분류 : <%= loaning[j].category %>
-            <input type="checkbox" name="loanedData" value="<%= loaning[j].id %>">
-        </p>
-        <% } %>
-        <input type="submit" value="제출">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>투자자 ID</th>
+                    <th>투자 금액 </th>
+                    <th>투자 상품</th>
+                    <th>채권 감정액</th>
+                    <th>상품 분류</th>
+                    <th>체크</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(j=0; j<loaning.length; j++) { %>
+                    <tr>
+                    <td><%= loaning[j].id %></td>
+                    <td><%= loaning[j].proposal %></td>
+                    <td><%= loaning[j].item %></td>
+                    <td><%= loaning[j].val %></td>
+                    <td><%= loaning[j].category %></td>
+                    <td><input type="checkbox" name="loanedData" value="<%= loaning[j].id %>"
+                            class="custom-control-input"></td>
+
+                        </tr>
+                    <% } %>
+            </tbody>
+        </table>
+        <div>
+
+            <input type="submit" value="제출" class="btn btn-info">
+        </div>
     </form>
 </body>
 

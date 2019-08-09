@@ -10,19 +10,46 @@
 
 <body>
     <%- include ./index.html %>
-    <h2>채권 판매 허가</h2>
-    <hr>
-    <form method="post" action="/confirm_complete">
-        <% for(i=0; i < data.bonds.length; i++) { %>
-        <p>
-            채권 명 : <%= data.bonds[i].item %> 채권 분류 : <%= data.bonds[i].category %> 채권 감정액 : <%= data.bonds[i].val %> 투자
-            금액: <%= data.bonds[i].proposal %> 투자자 ID : <%= data.bonds[i].investor %>
-            <input type="checkbox" name="item" value="<%= data.bonds[i].id %>">
-            <input type="hidden" name="item" value="<%= data.bonds[i].creditor %>">
-        </p>
-        <% } %>
-        <input type="submit" value="제출">
+    <div class="container">
+
+        <h2>채권 판매 허가</h2>
+        <hr>
+        <form method="post" action="/confirm_complete">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>채권 명</th>
+                    <th>채권 분류</th>
+                    <th>채권 감정액</th>
+                    <th>투자 금액</th>
+                    <th>투자자 ID</th>
+                    <th>체크</th>
+                </tr>
+            </thead>
+
+                <tbody>
+                    <% for(i=0; i < data.bonds.length; i++) { %>
+                    <tr>
+                        <td><%= data.bonds[i].item %></td>
+                        <td><%= data.bonds[i].category %> </td>
+                        <td><%= data.bonds[i].val %></td>
+                        <td><%= data.bonds[i].proposal %></td>
+                        <td><%= data.bonds[i].investor %></td>
+                        <td><input type="checkbox" class="custom-control-input" name="item"
+                                value="<%= data.bonds[i].id %>">
+                        </td>
+                        
+
+                    </tr>
+
+                    <% } %>
+                </tbody>
+
+              
+        </table>
+        <input type="submit" value="제출" class="btn btn-info">
     </form>
+    </div>
 </body>
 
 </html>
