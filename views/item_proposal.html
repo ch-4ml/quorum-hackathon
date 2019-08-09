@@ -11,10 +11,12 @@
 <body>
 
     <% include ./index.html %>
-    <% var investing = JSON.parse(data.investData) %>
-    <%= console.log(investing) %>
-    <% var loaning = JSON.parse(data.loanData) %>
+    
+    <% var investing = data.investData %>
+    <% var loaning = data.loanData %>
+
     <%= console.log(loaning) %>
+    <%= console.log(investing) %>
     <% for(i=0; i<investing.length; i++) { %>
     <form method="post" action="/build_item">
         <input type="hidden" name="investedData" value="<%= JSON.stringify(investing[i]) %>">

@@ -173,7 +173,6 @@ router.post('/enroll_item', function (req, res) {
     }
     var condition = callSum(enrolled_all);
     var sql = `UPDATE bankdb SET status = 1, investor = "${enrolled_all.investor}", proposal = ${enrolled_all.value_proposal} where ${condition}`;
-    console.log(sql);
     myConnection.query(sql, function (err, results) {
         if (err) {
             console.log('bankdb update ' + err);
@@ -195,24 +194,44 @@ router.get('/item_proposal', function (req, res) {
             if (err) {
                 console.log('bankdb_investor load ' + err)
             }
-            data = {
-                investData: JSON.stringify(results_1),
-                loanData: JSON.stringify(results_2),
-                userData: req.session.user,
+            data_packet = {
+                investData: results_1,
+                loanData : results_2,
+                userData : req.session.user,
             }
-            res.render('item_proposal.html', {data:data})
+
+            res.render('item_proposal.html', {data:data_packet})
         });
 
     });
 });
 
 router.post('/build_item', function (req, res) {
-    console.log(req.body.loanedData)
+    var loaning = JSON.parse(req.body.loanedData)
+    console.log(loaning)
     console.log(req.body.investedData)
-    
-    res.send();
+    function callSum(enrolled_all) {
+        var list = ""
+        var i = 0;
+        while (i < enrolled_all.enrolled_item.length) {
+            list = list + `item = ` + `"${enrolled_all.enrolled_item[i].item}"`;
+            if (i != enrolled_all.enrolled_item.length - 1) {
+                list = list + ` OR `
+            }
+            i++;
+        }
+        return list;
+    }
+    var condition = callSum(enrolled_all);
+    var sql = `UPDATE bankdb SET status = 2, creditor = ${req.session.user.id} where ${condition}`
+    myConnection.query(sql, function(err, results) {
+        if(err) {
+            console.log('item unselled ' + err);
+        }
+        res.redirect('/');
+    });
+});
 
-})
 module.exports = router;
 
 // 중복 투자자 제거 함수
@@ -226,3 +245,14 @@ module.exports = router;
         // });
         // var investedJson = fn_jsonArray1(investor_array1);
         // var investedPro = fn_jsonArray2(investor_array2);
+
+        // console.log(data_packet.investData)
+        // console.log(data_packet.loanData)
+        // var data_3 = JSON.stringify(data_packet.investData)
+        // var data_4 = JSON.stringify(data_packet.loanData)
+        // console.log(data_3)
+        // console.log(data_4)
+        // var data_5 = JSON.parse(data_3)
+        // var data_6 = JSON.parse(data_4)
+        // console.log(data_5)
+        // console.log(data_6)
