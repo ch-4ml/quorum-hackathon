@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <% include ./index.html %>
+    <%= console.log(data.investData) %>
+    <% for(i=0; i<data.investData.length; i++) { %>
+    <form method="post" action="/build_item">
+        <input type="hidden" name="investData1" value="<%= JSON.stringify(JSON.parse(data.investData[i])) %>">
+        투자자 명 : <%= JSON.parse(data.investData[i].investor) %>
+        투자 금액 : <%= JSON.parse(data.investData[i].proposal) %>
+        <% for(j=0; j<data.loanData.length; j++) { %>
+        <% if(JSON.parse(data.investData[i].investor_ == JSON.parse(data.loanData[j].investor) && JSON.parse(data.investData[i].proposal) == JSON.parse(data.loanData[j].proposal)) { %>
+        <input type="hidden" name="loanData" value="<%= JSON.stringify(JSON.parse(data.loanData[j])) %>">
+        <p>
+            투자 상품 : <%= JSON.parse(data.loanData[j].item) %>
+            투자 금액 : <%= JSON.parse(data.loanData[j].val) %>
+            상품 분류 : <%= JSON.parse(data.loanData[j].category) %>
+        </p>
+        <% } %>
+        <% } %>
+        <input type="submit" value="확인">
+    </form>
+    <% } %>
+</body>
+
+</html>

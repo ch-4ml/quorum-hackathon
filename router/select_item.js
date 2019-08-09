@@ -135,7 +135,7 @@ router.post('/select_process', function (req, res) {
     }
     var condition = callSum(req);
     var sql = `SELECT * from bankdb where val between ${req.body.min} AND ${req.body.max} AND (${condition})  AND (status = 0)`;
-    console.log(sql) 
+    console.log(sql)
     myConnection.query(sql, function (err, results) {
         if (err) {
             console.log('bankdb ' + err);
@@ -185,40 +185,44 @@ router.post('/enroll_item', function (req, res) {
 });
 
 router.get('/item_proposal', function (req, res) {
-    var sql = `SELECT investor, proposal FROM bankdb GROUP BY investor, proposal`; 
-    myConnection.query(sql, function(err, results) {
-        
-    })
+    var sql_1 = `SELECT investor, proposal FROM bankdb WHERE status=1 GROUP BY investor, proposal`;
+    myConnection.query(sql_1, function (err, results_1) {
+        if (err) {
 
+        }
+        var sql_2 = `SELECT item, val, category, investor, proposal FROM bankdb WHERE status = 1`;
+        myConnection.query(sql_2, function (err, results_2) {
+            if (err) {
+                console.log('bankdb_investor load ' + err)
+            }
+            data = {
+                investData: JSON.stringify(results_1),
+                loanData: JSON.stringify(results_2),
+                userData: req.session.user,
+            }
+            res.render('item_proposal.html', {data:data})
+        });
 
-    // var sql_2 = `SELECT item, val, category,investor, proposal FROM bankdb WHERE status = 1`;
-    // myConnection.query(sql_2, function (err, results) {
-    //     if (err) {
-    //         console.log('bankdb_investor load ' + err)
-    //     }
-    //     // 중복 투자자 제거 함수
-    //     var unique_index = uniqueArray1(results);
-    //     var investor_array1 = unique_index.filter(function (value, index, self) {
-    //         return self.indexOf(value) === index;
-    //     });
-    //     var unique_index = uniqueArray2(results);
-    //     var investor_array2 = unique_index.filter(function (value, index, self) {
-    //         return self.indexOf(value) === index;
-    //     });
-    //     var investedJson = fn_jsonArray1(investor_array1);
-    //     var investedPro = fn_jsonArray2(investor_array2);
-    //     build_item = {
-    //         item_data: results,
-    //         investor: investedJson,
-    //         proposal: investedPro,
-    //         userData: req.session.user,
-    //     }
-    //     res.render('item_proposal.html', { data: build_item });
     });
 });
 
-router.post('/build_item', function(req, res) {
-    console.log(req.body)
+router.post('/build_item', function (req, res) {
+    console.log(req.body.loanedData)
+    console.log(req.body.investedData)
+    
     res.send();
+
 })
 module.exports = router;
+
+// 중복 투자자 제거 함수
+        // var unique_index = uniqueArray1(results);
+        // var investor_array1 = unique_index.filter(function (value, index, self) {
+        //     return self.indexOf(value) === index;
+        // });
+        // var unique_index = uniqueArray2(results);
+        // var investor_array2 = unique_index.filter(function (value, index, self) {
+        //     return self.indexOf(value) === index;
+        // });
+        // var investedJson = fn_jsonArray1(investor_array1);
+        // var investedPro = fn_jsonArray2(investor_array2);

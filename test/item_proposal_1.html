@@ -11,14 +11,20 @@
 <body>
 
     <% include ./index.html %>
-    <%= console.log(data2.investData.investor) %>
+    <% var abc = data.investData; %>
+    <% var ab = JSON.parse(data.investData) %>
+    <%= console.log(ab[0]) %>
+    <%= console.log(ab[0].investor) %>
+    <% for(i=0; i<ab.length; i++) { %>
     <form method="post" action="/build_item">
 
-        <p>
-            <label><input type="checkbox">선택</label>
-        </p>
+        투자자 명 : <%= ab[i].investor %>
+        <% for(j=0; j<data.loanData.length; j++) { %>
+
+        <% } %>
         <input type="submit" value="확인">
     </form>
+    <% } %>
 </body>
 
 </html>
