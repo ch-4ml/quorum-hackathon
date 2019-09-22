@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var myConnection = mysql.createConnection(require('../dbConfig'));
+var myConnection = mysql.createConnection(require('../dbconfig'));
 
 //session 설정
 const session = require('express-session');
@@ -31,10 +31,12 @@ router.get('/', function (req, res) {
     res.render('index.html', { data: data });
 });
 
+// 로그인
 router.get('/login', function (req, res) {
     res.render('login.html');
 });
 
+// 로그인 처리
 router.post('/login_process', function (req, res) {
     const user = {
         insertedID: req.body.userID,
@@ -56,6 +58,7 @@ router.post('/login_process', function (req, res) {
     });
 });
 
+// 로그아웃
 router.get('/logout', function (req, res) {
     if (req.session.user) {
         req.session.destroy(err => {
@@ -67,10 +70,12 @@ router.get('/logout', function (req, res) {
     }
 })
 
+// 회원 가입 페이지로
 router.get('/register', function (req, res) {
     res.render('access_select_register.html');
 });
 
+// 회원 가입 선택
 router.post('/register_Selection', function (req, res) {
     console.log(req.body);
     var data;
@@ -88,12 +93,21 @@ router.post('/register_Selection', function (req, res) {
     res.render('register.html', { data: data })
 });
 
+// 회원 가입 처리
 router.post('/register_process', function (req, res) {
-    console.log(req.body.distinct_num)
+    console.log(req.body.distinct_num);
+    var sql = "select id from testdb order by id desc limit 1";
+    myConnection.query(sql, function (err, data) {
+        if (err) {
+            console.log('Register Err :' + err);
+        }
+        console.log(data);
+        /* 여기에 data(uint id)로 createUser 호출 */
+    });
     var userID = req.body.userID;
     var userPW = req.body.userPW;
     var status = req.body.distinct_num;
-    var sql = 'insert into testdb (userID, userPW, status) values (?, ?, ?)';
+    sql = 'insert into testdb (userID, userPW, status) values (?, ?, ?)';
     myConnection.query(sql, [userID, userPW, status], function (err, data) {
         if (err) {
             console.log('Register Err :' + err);

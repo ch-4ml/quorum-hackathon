@@ -47,38 +47,38 @@ contract investContract {
     Bond[] private bonds;
 
     // 회원 가입
-    function _createUser(uint _userId, uint _species) public {
+    function createUser(uint _userId, uint _species) public {
         userSpecies[_userId] = Species(_species);
     }
 
     // 채권 등록(은행)
-    function _registerBond(uint _userId, uint _value, uint _minValue) public onlyBank(_userId) {
+    function registerBond(uint _userId, uint _value, uint _minValue) public onlyBank(_userId) {
         bonds.push(Bond(_userId, _value, _minValue, 0, 0, 0, 0, 0, Status.Suggesting));
     }
 
     // 투자금 제안
-    function _suggest(uint _bondId, uint _userId, uint _amount) public onlyInvestor(_userId) onlySuggesting(_bondId) {
+    function suggest(uint _bondId, uint _userId, uint _amount) public onlyInvestor(_userId) onlySuggesting(_bondId) {
         suggestList[_bondId].push(Suggest(_userId, _amount));
     }
     
     // 투자금 제안 완료(시간 경과)
-    function _completedSuggest(uint _bondId) public onlySuggesting(_bondId) {
+    function completedSuggest(uint _bondId) public onlySuggesting(_bondId) {
         bonds[_bondId].status = Status.Applying;
     }
 
     // 제안 완료된 채권 조회
-    function _querySuggestedBond(uint _bondId, uint _userId) public view onlyAgency(_userId) onlyApplying(_bondId) returns (Suggest[] memory) {
+    function querySuggestedBond(uint _bondId, uint _userId) public view onlyAgency(_userId) onlyApplying(_bondId) returns (Suggest[] memory) {
         return suggestList[_bondId];
     }
 
     // 매입기관이 은행에게 채권 구매 신청
-    function _apply(uint _bondId, uint _userId) public onlyAgency(_userId) onlyApplying(_bondId) {
+    function apply(uint _bondId, uint _userId) public onlyAgency(_userId) onlyApplying(_bondId) {
         bonds[_bondId].owner = _userId;
         bonds[_bondId].status = Status.Applied;
     }
 
     // 은행 - 매입기관 거래
-    function _txBondBtwBankAndAgency(uint _bankId, uint _bondId, bool _isChecked) public onlyBank(_bankId) onlyApplied(_bondId) {
+    function txBondBtwBankAndAgency(uint _bankId, uint _bondId, bool _isChecked) public onlyBank(_bankId) onlyApplied(_bondId) {
         if(_isChecked) {
             bonds[_bondId].status = Status.Purchased;
         } else {
@@ -88,13 +88,13 @@ contract investContract {
     }
 
     // 투자금 책정(매입기관)
-    function _bondPriceAndPost(uint _userId, uint _bondId, uint _fixedValue) public onlyAgency(_userId) onlyPurchased(_bondId) {
+    function bondPriceAndPost(uint _userId, uint _bondId, uint _fixedValue) public onlyAgency(_userId) onlyPurchased(_bondId) {
         bonds[_bondId].fixedValue = _fixedValue;
         bonds[_bondId].status = Status.Posted;
     }
 
     // 매입기관 - 투자자 거래
-    function _txBondBtwAgencyAndInvestor(uint _bondId, uint _userId, bool _isChecked) public onlyInvestor(_userId) onlyPosted(_bondId) {
+    function txBondBtwAgencyAndInvestor(uint _bondId, uint _userId, bool _isChecked) public onlyInvestor(_userId) onlyPosted(_bondId) {
         if(_isChecked) {
             for(uint i=0; i<suggestList[_bondId].length; i++) {
                 if(suggestList[_bondId][i].suggester == _userId) {
@@ -110,22 +110,22 @@ contract investContract {
     }
 
     // 채권자 변동횟수 업데이트
-    function _updateCreditorChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
+    function updateCreditorChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
         bonds[_bondId].creditorChanges++;
     }
 
     // 소유자 변동횟수 업데이트
-    function _updateOwnerChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
+    function updateOwnerChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
         bonds[_bondId].ownerChanges++;
     }
 
     // 근저당권 변동횟수 업데이트
-    function _updateMortgageChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
+    function updateMortgageChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
         bonds[_bondId].mortgageChanges++;
     }
 
     // 질권 변동횟수 업데이트
-    function _updatePledgeChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
+    function updatePledgeChangeCount(uint _userId, uint _bondId) public onlyBankOrAgency(_userId) {
         bonds[_bondId].pledgeChanges++;
     }
 
